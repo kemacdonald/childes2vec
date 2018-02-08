@@ -1,0 +1,49 @@
+---
+title: "Get Childes Data"
+author: "Kyle MacDonald"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setup
+
+```{r load libraries}
+library(here); library(childesr); library(magrittr)
+library(tidytext)
+library(feather)
+library(tidyverse)
+```
+
+## Pull data
+
+Just get the child's input data.
+
+```{r get utterances}
+d <- get_utterances(collection = c("Eng-NA", "Eng-UK"), role_exclude = "child")
+beepr::beep(sound = 3)
+```
+
+## Process utterances
+
+Tokenize and count number of words
+
+```{r convert to unigrams}
+d_unigrams <- d %>% 
+  select(stem) %>% 
+  unnest_tokens(word, stem) 
+```
+
+There are around 1.7B words of input data in the Eng-NA and Eng-UK collections.
+
+## Save to disk in a lightweight format 
+
+Goal is to create a data structure so we can fit a word2vec model. here we are using feather because it can talk to both Python and R
+easily.
+
+```{r write to disk}
+write_feather(d_unigrams, here('data/childes_input_unigrams.feather'))
+```
+
