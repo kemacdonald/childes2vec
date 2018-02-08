@@ -44,6 +44,5 @@ Goal is to create a data structure so we can fit a word2vec model. here we are u
 easily.
 
 ```{r write to disk}
-write_feather(d_unigrams, here('data/childes_input_unigrams.feather'))
+write_feather(d_unigrams, here('data/raw_data/childes_input_unigrams.feather'))
 ```
-
