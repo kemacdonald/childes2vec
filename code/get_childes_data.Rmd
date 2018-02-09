@@ -21,8 +21,13 @@ library(tidyverse)
 
 Just get the child's input data.
 
-```{r get utterances}
+```{r get utterances, eval = F}
 d <- get_utterances(collection = c("Eng-NA", "Eng-UK"), role_exclude = "child")
+beepr::beep(sound = 3)
+```
+
+```{r get utterances test}
+d <- get_utterances(collection = c("Eng-NA"), role_exclude = "child", child = "Adam")
 beepr::beep(sound = 3)
 ```
 
@@ -43,6 +48,10 @@ There are around 1.7B words of input data in the Eng-NA and Eng-UK collections.
 Goal is to create a data structure so we can fit a word2vec model. here we are using feather because it can talk to both Python and R
 easily.
 
-```{r write to disk}
+```{r write test to disk}
+write_delim(d %>% select(stem), here('data/childes_test.txt'), col_names = F)
+```
+
+```{r write to disk, eval = F}
 write_feather(d_unigrams, here('data/raw_data/childes_input_unigrams.feather'))
 ```
